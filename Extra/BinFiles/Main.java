@@ -165,10 +165,21 @@ public class Main
 			// Define u2 values from the byte array
 			u2.fromBytes(bytes);
 			
-			// Print result
-			System.out.println ("u1:"+u1);
-			System.out.println ("u2:"+u2);
+			// Print users
+			System.out.println ("u1:\n"+u1);
+			System.out.println ("u2:\n"+u2);
+			
+			/* user.bin: [00 00 00 0A 00 04 44 61 76 69 00 00 00 13 0A]
 
+				|00 00 00 0A| -> byte array size (10)
+				|00 04| -> String size
+				|44| -> 'D'
+				|61| -> 'a'
+				|76| -> 'v'
+				|69| -> 'i'
+				|00 00 00 13| -> age (19)
+				|0A| -> [new line]
+			*/
 		}
 		catch (IOException ex)
 		{
