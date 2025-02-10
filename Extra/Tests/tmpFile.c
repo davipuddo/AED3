@@ -101,5 +101,9 @@ int main(int argc, char* argv[])
 			writeFile(buf);
 		}
 	}
+	else
+	{
+		printf("ERROR: The file number is too big!\n");
+	}
 	return(0);
 }
