@@ -383,7 +383,7 @@ class DataTypes
 			// Read string size
 			short strN = readShort();
 
-			if (strN < -1)
+			if (strN < 1)
 			{
 				std::cerr << "ERROR: Invalid string size!\n";
 			}
@@ -454,7 +454,8 @@ class File
 				short N = (short)BAA->getSize();
 				
 				// Store size
-				fs << (byte)(N & 0xFF00); // Upper
+				byte buffer = (N & 0xFF00) >> 8; // Upper
+				fs << buffer;
 				fs << (byte)(N & 0x00FF); // Lower
 
 				// Store data
@@ -466,7 +467,8 @@ class File
 					short n = aux->getSize();
 
 					// Store size
-					fs << (byte)(n & 0xFF00);
+					buffer = (n & 0xFF00) >> 8;
+					fs << buffer;
 					fs << (byte)(n & 0x00FF);
 					
 					// Store BA data
@@ -828,7 +830,7 @@ class User
 
 };
 
-void populate ()
+void populate (void)
 {
 	// Create users
 	std::cout << "===== Normal users =====\n\n";
@@ -841,6 +843,7 @@ void populate ()
 
 	// Create ByteArray Array
 	Array<Array<byte>*>* BAA = new Array<Array<byte>*>(2);
+
 	
 	// Add users data
 	BAA->setData(u1->toByteArray(), 0);
@@ -862,7 +865,7 @@ int main(void)
 {	
 
 	// Write data on the file
-	//populate();
+	populate();
 
 	// File aux class
 	File* f = new File("log.bin");
@@ -870,22 +873,25 @@ int main(void)
 	// Read data
 	Array<Array<byte>*>* BAA = f->read();
 
-	// Create new users from the file data
-	User* u1 = new User;
-	u1->fromByteArray(BAA->getData(0));
+	if (BAA)
+	{
+		// Create new users from the file data
+		User* u1 = new User;
+		u1->fromByteArray(BAA->getData(0));
 
-	User* u2 = new User;
-	u2->fromByteArray(BAA->getData(1));
+		User* u2 = new User;
+		u2->fromByteArray(BAA->getData(1));
 
-	// Print new users
-	std::cout << "===== File users =====\n\n";
-	u1->print();
-	u2->print();
+		// Print new users
+		std::cout << "===== File users =====\n\n";
+		u1->print();
+		u2->print();
 
-	// Free memory
-	delete(u1);
-	delete(u2);
-	delete(BAA);
+		// Free memory
+		delete(u1);
+		delete(u2);
+		delete(BAA);
+	}
 	delete(f);
 
 	return (0);
