@@ -1,4 +1,4 @@
-package book;
+package entity;
 
 public interface FileEntity 
 {
